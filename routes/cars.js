@@ -20,15 +20,13 @@ router.post('/api/cars', async (req, res) => {
         const { error } = validateCar(req.body)
         if (error) { return res.status(400).json({ error: error.details[0].message }) }
 
-        // const file = req.file
-        // if (!file) { return res.status(400).json({ error: 'Please Upload File' }) }
-        
+       
         const model = await Model.findById(req.body.modelId)
         if (!model) { return res.status(400).json({ error: 'Model Not Found' }) }
-        
+
 
         let car = new Car({
-           // _id: req.body._id,
+            // _id: req.body._id,
             model,
             year: req.body.year,
             color: req.body.color,
@@ -37,9 +35,10 @@ router.post('/api/cars', async (req, res) => {
             transmission: req.body.transmission,
             description: req.body.description,
             milage: req.body.milage,
-            driveType: req.body.driveType
+            driveType: req.body.driveType,
+            userId: req.body.userId
         })
-      //  res.send('hello')
+        //  res.send('hello')
         await car.save()
 
         res.send(car)
@@ -103,7 +102,7 @@ router.put('/api/cars/:id', async (req, res) => {
         if (!model) { return res.status(400).json({ error: 'Model Not Found' }) }
 
         car = ({
-           // _id: req.body._id,
+            // _id: req.body._id,
             model,
             year: req.body.year,
             color: req.body.color,
@@ -112,7 +111,8 @@ router.put('/api/cars/:id', async (req, res) => {
             transmission: req.body.transmission,
             description: req.body.description,
             milage: req.body.milage,
-            driveType: req.body.driveType
+            driveType: req.body.driveType,
+            userId: req.body.userId
         })
 
         car = await Car.findByIdAndUpdate(req.params.id, { $set: car }, { new: true })
@@ -143,7 +143,7 @@ router.delete('/api/cars/:id', async (req, res) => {
 
 function validateCar(car) {
     const schema = ({
-       // _id: Joi.string(),
+        // _id: Joi.string(),
         imageURL: Joi.string(),
         modelId: Joi.string(),
         bodyType: Joi.string(),
@@ -153,7 +153,8 @@ function validateCar(car) {
         year: Joi.number(),
         description: Joi.string(),
         driveType: Joi.string(),
-        milage: Joi.number()
+        milage: Joi.number(),
+        userId: Joi.string()
     })
     return Joi.validate(car, schema)
 }

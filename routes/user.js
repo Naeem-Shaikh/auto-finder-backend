@@ -47,7 +47,7 @@ router.get('/api/users/me', [auth], async (req, res) => {
         const user = await User.findById(req.user._id)
         if (!user) { return res.status(400).json({ error: 'User Not Found' }) }
 
-        const data = _.pick(user, ['name', '_id', 'email'])
+        const data = _.pick(user, ['name', '_id', 'email', 'date'])
         res.status(200).json(data)
     } catch (error) {
         res.status(500).json({ error: 'Server Error' })

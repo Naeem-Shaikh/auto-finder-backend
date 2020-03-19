@@ -39,7 +39,8 @@ const carSchema = new mongoose.Schema({
     driveType: { type: String },
     transmission: { type: String, required: true },
     bodyType: { type: String, required: true },
-    description: { type: String }
+    description: { type: String },
+    userId: { type: String }
 })
 
 
