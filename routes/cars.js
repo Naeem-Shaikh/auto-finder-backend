@@ -5,8 +5,7 @@ const Joi = require('joi')
 const Car = require('../models/Car')
 const Model = require('../models/Model')
 const filterCarModel = require('../utils/filterCarModel')
-const multer = require('multer')
-const multerS3 = require('multer-s3')
+
 const AWS = require('aws-sdk')
 const s3 = new AWS.S3()
 const imageId = mongoose.Types.ObjectId()
@@ -14,21 +13,6 @@ const path = require('path')
 const Image = require('../models/Image')
 
 
-
-
-
-
-const storage = multerS3({
-    s3: s3,
-    bucket: 'autofinder-car-images',
-    contentType: multerS3.AUTO_CONTENT_TYPE,
-    acl: 'public-read',
-    key: function (req, file, cb) {
-        cb(null, imageId + path.extname(file.originalname))
-    }
-})
-
-const upload = multer({ storage })
 
 
 router.post('/api/cars', async (req, res) => {

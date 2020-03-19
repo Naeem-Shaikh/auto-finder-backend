@@ -7,11 +7,11 @@ const fs = require('fs')
 const path = require('path')
 const mongoose = require('mongoose')
 const Image = require('../models/Image')
+require('dotenv').config()
 
 
-
-const accessKey = 'AKIAIWDZ6JMPQSXAJQQA'
-const secretKey = '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'
+const accessKey = process.env.AWS_ACCESS_KEY_ID
+const secretKey = process.env.AWS_SECRET_ACCESS_KEY
 AWS.config = ({
     accessKeyId: accessKey,
     secretAccessKey: secretKey
@@ -33,7 +33,7 @@ const filepath = './uploads/carPicUpload.png'
 // })
 const storage = multerS3({
     s3: s3,
-    bucket: 'autofinder-car-images',
+    bucket: process.env.AWS_BUCKET_NAME,
     contentType: multerS3.AUTO_CONTENT_TYPE,
     acl: 'public-read',
     shouldTransform: function (req, file, cb) {
