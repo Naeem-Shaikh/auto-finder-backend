@@ -54,10 +54,38 @@ router.get('/api/users/me', [auth], async (req, res) => {
     }
 })
 
+router.put('/api/users/me', [auth], async (req, res) => {
+    try {
+
+        let user = await User.findByIdAndUpdate(req.user._id, { $set: req.body }, { new: true })
+        if (!user) { return res.status(400).json({ error: "User Not Found" }) }
+
+        await user.save()
+        res.status(200).json({ message: "User Updated Successfully" })
+
+    } catch (error) {
+        res.status(500).json({ error: 'Server Error', error })
+    }
+})
 
 
+router.put('/api/users/me/password', [auth], async (req, res) => {
+    try {
+        console.log(req.body)
+        let user = await User.findByIdAndUpdate(req.user._id, { $set: req.body }, { new: true })
+        if (!user) { return res.status(400).json({ error: "User Not Found" }) }
 
+        console.log(user.password)
+        const salt = await bcrypt.genSalt(10)
+        user.password = await bcrypt.hash(user.password, salt)
 
+        await user.save()
+        res.status(200).json({ message: "Password Updated Successfully" })
+
+    } catch (error) {
+        res.status(500).json({ error: 'Server Error', error })
+    }
+})
 
 
 
