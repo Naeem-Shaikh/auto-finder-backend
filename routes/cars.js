@@ -20,7 +20,7 @@ router.post('/api/cars', async (req, res) => {
         const { error } = validateCar(req.body)
         if (error) { return res.status(400).json({ error: error.details[0].message }) }
 
-       
+
         const model = await Model.findById(req.body.modelId)
         if (!model) { return res.status(400).json({ error: 'Model Not Found' }) }
 
@@ -36,7 +36,8 @@ router.post('/api/cars', async (req, res) => {
             description: req.body.description,
             milage: req.body.milage,
             driveType: req.body.driveType,
-            userId: req.body.userId
+            userId: req.body.userId,
+            userName: req.body.userName
         })
         //  res.send('hello')
         await car.save()
@@ -112,7 +113,8 @@ router.put('/api/cars/:id', async (req, res) => {
             description: req.body.description,
             milage: req.body.milage,
             driveType: req.body.driveType,
-            userId: req.body.userId
+            userId: req.body.userId,
+            userName: req.body.userName
         })
 
         car = await Car.findByIdAndUpdate(req.params.id, { $set: car }, { new: true })
@@ -154,7 +156,8 @@ function validateCar(car) {
         description: Joi.string(),
         driveType: Joi.string(),
         milage: Joi.number(),
-        userId: Joi.string()
+        userId: Joi.string(),
+        userName: Joi.string()
     })
     return Joi.validate(car, schema)
 }
